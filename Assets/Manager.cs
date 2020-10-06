@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR.ARFoundation;
 
 public class Manager : MonoBehaviour
 {
-    public GameObject ye;
-    public ARPlaneManager planeAr;
-    
-
-    private void Awake()
+    public Vector3 scales;
+    public Slider rot;
+    public Slider scale;
+    public GameObject kyle;
+   
+    private void Start()
     {
-       
+        rot.maxValue = 360;
+        rot.minValue = 0;
+        scale.maxValue = 5;
+        scale.minValue = 0;
     }
-    public void GetAllPlanes(List<ARPlane> planes)
-    {
-
-    }
-    public void reee(bool value)
-    {
-        foreach (var plane in planeAr.trackables)
-            plane.gameObject.SetActive(value);
-        planeAr.enabled = !planeAr.enabled;
+    void Update()
+    { 
+        kyle.transform.rotation =Quaternion.Euler(0, rot.value, 0);
+        kyle.transform.localScale = new Vector3(scale.value, scale.value, scale.value);
     }
 }

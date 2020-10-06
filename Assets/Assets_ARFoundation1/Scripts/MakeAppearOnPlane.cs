@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -13,6 +14,7 @@ using UnityEngine.XR.ARSubsystems;
 public class MakeAppearOnPlane : MonoBehaviour
 {
     [SerializeField]
+   
     [Tooltip("A transform which should be made to appear to be at the touch point.")]
     Transform m_Content;
 
@@ -58,13 +60,15 @@ public class MakeAppearOnPlane : MonoBehaviour
 
         if (m_RaycastManager.Raycast(touch.position, s_Hits, TrackableType.PlaneWithinPolygon))
         {
-            // Raycast hits are sorted by distance, so the first one
-            // will be the closest hit.
-            var hitPose = s_Hits[0].pose;
+            if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+            {
+                var hitPose = s_Hits[0].pose;
+                m_SessionOrigin.MakeContentAppearAt(content, hitPose.position, m_Rotation);
+            }
+           //hitPose = s_Hits[0].pose;
 
-            // This does not move the content; instead, it moves and orients the ARSessionOrigin
-            // such that the content appears to be at the raycast hit position.
-            m_SessionOrigin.MakeContentAppearAt(content, hitPose.position, m_Rotation);
+           
+           // m_SessionOrigin.MakeContentAppearAt(content, hitPose.position, m_Rotation);
         }
     }
 
